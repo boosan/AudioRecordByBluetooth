@@ -13,7 +13,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.media.AudioFormat;
 import android.media.AudioManager;
+import android.media.MediaFormat;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -127,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
             Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
             if (pairedDevices.size() > 0) {
                 for (BluetoothDevice device : pairedDevices) {
-                    device.getC
                     // 把名字和地址取出来添加到适配器中
                     //得到BluetoothDevice的Class对象
                     Class<BluetoothDevice> bluetoothDeviceClass = BluetoothDevice.class;
@@ -192,9 +193,12 @@ public class MainActivity extends AppCompatActivity {
 
             audioManager.startBluetoothSco();
             recorder = new MediaRecorder();
+            recorder.setAudioSamplingRate(16000);
+            recorder.setAudioEncodingBitRate(AudioFormat.ENCODING_PCM_16BIT);
             recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);
+
             recorder.setOutputFile(file.toString());
             recorder.prepare();
             recorder.start();
